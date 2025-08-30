@@ -1,0 +1,21 @@
+.hidden-sidebar > aside {
+	width: 3.8rem;
+	flex-grow: 0;
+
+	> nav > h3:first-child {
+		opacity: 0;
+		transition: opacity 0.35s;
+	}
+}
+
+.hidden-sidebar > div {
+	width: 100%;
+}
+
+.opened-sidebar > aside {
+	width: var(--sidebar-width);
+}
+
+.initial-sidebar > aside {
+	transition: width 0.35s;
+}
