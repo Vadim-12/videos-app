@@ -1,4 +1,4 @@
-import { Flame } from 'lucide-react'
+import { Flame, Gamepad2 } from 'lucide-react'
 import type { Metadata } from 'next'
 
 import { Heading } from '@/ui/heading'
@@ -12,32 +12,32 @@ export const revalidate = 60
 // export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-	title: 'Trending',
-	description: 'Trending video',
+	title: 'Video games',
+	description: 'Best gaming videos',
 	alternates: {
-		canonical: PAGES.TRENDING
+		canonical: PAGES.VIDEO_GAMES
 	},
 	openGraph: {
 		type: 'website',
-		url: PAGES.TRENDING,
-		title: 'Trending'
+		url: PAGES.VIDEO_GAMES,
+		title: 'Video games'
 	}
 }
 
-export default async function TrendingPage() {
-	const { data } = await videoService.getTrendingVideos()
+export default async function VideoGamesPage() {
+	const { data } = await videoService.getVideoGames()
 
 	return (
 		<section>
 			<Heading
 				isH1
-				Icon={Flame}
+				Icon={Gamepad2}
 			>
 				Trending
 			</Heading>
 			<div className='grid-6-cols'>
-				{data?.length ? (
-					data.map(video => (
+				{data?.videos?.length ? (
+					data.videos.map(video => (
 						<VideoItem
 							key={video.id}
 							video={video}
@@ -45,7 +45,7 @@ export default async function TrendingPage() {
 						/>
 					))
 				) : (
-					<p>Trends are temporarily unavailable</p>
+					<p>Video games are temporarily unavailable</p>
 				)}
 			</div>
 		</section>

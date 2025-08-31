@@ -1,8 +1,10 @@
-import axios from 'axios'
+import { axiosClassic } from '@/api/axios'
 
 import type { IVideo } from '@/types/video.types'
 
 class VideoService {
+	private _VIDEOS_PREFIX = '/videos'
+
 	getAll(searchTerm?: string | null) {
 		const options = searchTerm
 			? {
@@ -11,15 +13,19 @@ class VideoService {
 					}
 				}
 			: {}
-		return axios.get<{ videos: IVideo[] }>('http://localhost:4200/api/videos', options)
+		return axiosClassic.get<{ videos: IVideo[] }>(this._VIDEOS_PREFIX, options)
 	}
 
 	getTrendingVideos() {
-		return axios.get<IVideo[]>('http://localhost:4200/api/videos/trending')
+		return axiosClassic.get<IVideo[]>(`${this._VIDEOS_PREFIX}/trending`)
+	}
+
+	getVideoGames() {
+		return axiosClassic.get<{ videos: IVideo[] }>(`${this._VIDEOS_PREFIX}/games`)
 	}
 
 	getExploreVideos() {
-		return axios.get<{ videos: IVideo[] }>('http://localhost:4200/api/videos/explore')
+		return axiosClassic.get<{ videos: IVideo[] }>(`${this._VIDEOS_PREFIX}/explore`)
 	}
 }
 
