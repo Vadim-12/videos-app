@@ -33,7 +33,7 @@ export default async function VideoGamesPage() {
 				isH1
 				Icon={Gamepad2}
 			>
-				Trending
+				Video games
 			</Heading>
 			<div className='grid-6-cols'>
 				{data?.videos?.length ? (
