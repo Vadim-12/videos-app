@@ -2,10 +2,10 @@
 
 import { m } from 'framer-motion'
 import { useAnimate } from 'framer-motion/mini'
-import { Flame, type LucideIcon, Verified } from 'lucide-react'
+import { FlameIcon, Gamepad2, Verified } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { type FC, useEffect, useState } from 'react'
+import { type FC, useEffect, useMemo, useState } from 'react'
 
 import { PAGES } from '@/config/public-pages.config'
 
@@ -14,16 +14,24 @@ import { transformViews } from '@/utils/transform-views'
 
 import type { IVideo } from '@/types/video.types'
 
+const CustomIcons = {
+	flame: FlameIcon,
+	game: Gamepad2
+}
+export type CustomIconType = keyof typeof CustomIcons
+
 interface Props {
 	video: IVideo
-	Icon?: LucideIcon
+	icon?: CustomIconType
 }
 
-export const VideoItem: FC<Props> = ({ video, Icon = Flame }) => {
+export const VideoItem: FC<Props> = ({ video, icon }) => {
 	const [isCardHovered, setIsCardHovered] = useState(false)
 	const [isChannelIconHovered, setIsChannelIconHovered] = useState(false)
 
 	const [scope, animate] = useAnimate()
+
+	const ThemeIcon = useMemo(() => icon && CustomIcons[icon], [icon])
 
 	useEffect(() => {
 		if (isCardHovered) {
@@ -59,10 +67,7 @@ export const VideoItem: FC<Props> = ({ video, Icon = Flame }) => {
 			onHoverStart={() => setIsCardHovered(true)}
 			onHoverEnd={() => setIsCardHovered(false)}
 		>
-			<m.div
-				className='relative mb-1'
-				// whileHover={{ rotateY: isHovered ? '30deg' : '0deg' }}
-			>
+			<m.div className='relative mb-1'>
 				<Link
 					href={PAGES.VIDEO(video.slug)}
 					className='rounded-md overflow-hidden inline-block'
@@ -95,8 +100,8 @@ export const VideoItem: FC<Props> = ({ video, Icon = Flame }) => {
 			</m.div>
 			<div className='mb-2 flex justify-between items-center text-gray-400'>
 				<div className='flex items-center gap-1'>
-					{Icon && (
-						<Icon
+					{ThemeIcon && (
+						<ThemeIcon
 							size={16}
 							className='text-red-600'
 						/>

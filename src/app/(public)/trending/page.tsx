@@ -41,7 +41,7 @@ export default async function TrendingPage() {
 						<VideoItem
 							key={video.id}
 							video={video}
-							Icon={Flame}
+							icon='flame'
 						/>
 					))
 				) : (

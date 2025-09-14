@@ -1,4 +1,4 @@
-import { Flame, Gamepad2 } from 'lucide-react'
+import { Gamepad2 } from 'lucide-react'
 import type { Metadata } from 'next'
 
 import { Heading } from '@/ui/heading'
@@ -41,7 +41,7 @@ export default async function VideoGamesPage() {
 						<VideoItem
 							key={video.id}
 							video={video}
-							Icon={Flame}
+							icon='flame'
 						/>
 					))
 				) : (
