@@ -1,8 +1,11 @@
-import * as m from 'framer-motion/m'
-import { type LucideIcon, Verified } from 'lucide-react'
+'use client'
+
+import { m } from 'framer-motion'
+import { useAnimate } from 'framer-motion/mini'
+import { Flame, type LucideIcon, Verified } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { type FC } from 'react'
+import { type FC, useEffect, useState } from 'react'
 
 import { PAGES } from '@/config/public-pages.config'
 
@@ -16,7 +19,28 @@ interface Props {
 	Icon?: LucideIcon
 }
 
-export const VideoItem: FC<Props> = ({ video, Icon }) => {
+export const VideoItem: FC<Props> = ({ video, Icon = Flame }) => {
+	const [isCardHovered, setIsCardHovered] = useState(false)
+	const [isChannelIconHovered, setIsChannelIconHovered] = useState(false)
+
+	const [scope, animate] = useAnimate()
+
+	useEffect(() => {
+		if (isCardHovered) {
+			animate(scope.current, { rotate: '10deg', opacity: 0.4 })
+		} else {
+			animate(scope.current, { rotate: '0deg', opacity: 1 })
+		}
+	}, [isCardHovered, scope, animate])
+
+	useEffect(() => {
+		if (isChannelIconHovered) {
+			animate(scope.current, { rotate: '0deg', opacity: 1 })
+		} else {
+			animate(scope.current, { rotate: '10deg', opacity: 0.4 })
+		}
+	}, [isChannelIconHovered, scope, animate])
+
 	return (
 		<m.div
 			className='text-xs'
@@ -32,8 +56,13 @@ export const VideoItem: FC<Props> = ({ video, Icon }) => {
 				stiffness: 300,
 				damping: 20
 			}}
+			onHoverStart={() => setIsCardHovered(true)}
+			onHoverEnd={() => setIsCardHovered(false)}
 		>
-			<div className='relative mb-1'>
+			<m.div
+				className='relative mb-1'
+				// whileHover={{ rotateY: isHovered ? '30deg' : '0deg' }}
+			>
 				<Link
 					href={PAGES.VIDEO(video.slug)}
 					className='rounded-md overflow-hidden inline-block'
@@ -49,14 +78,21 @@ export const VideoItem: FC<Props> = ({ video, Icon }) => {
 					href={PAGES.CHANNEL(video.channel.slug)}
 					className='rounded-full overflow-hidden inline-block absolute left-2 bottom-3'
 				>
-					<Image
-						src={video.channel.avatarUrl}
-						width={35}
-						height={35}
-						alt={video.channel.name}
-					/>
+					<m.span
+						onHoverStart={() => setIsChannelIconHovered(true)}
+						onHoverEnd={() => setIsChannelIconHovered(false)}
+					>
+						<Image
+							src={video.channel.avatarUrl}
+							width={35}
+							height={35}
+							alt={video.channel.name}
+							ref={scope}
+							style={{ rotate: '360deg' }}
+						/>
+					</m.span>
 				</Link>
-			</div>
+			</m.div>
 			<div className='mb-2 flex justify-between items-center text-gray-400'>
 				<div className='flex items-center gap-1'>
 					{Icon && (

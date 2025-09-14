@@ -39,7 +39,7 @@ export default async function Home() {
 							<VideoItem
 								key={video.id}
 								video={video}
-								Icon={Flame}
+								// Icon={Flame}
 							/>
 						))}
 					</div>
