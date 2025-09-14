@@ -1,7 +1,8 @@
+import * as m from 'framer-motion/m'
 import { type LucideIcon, Verified } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import type { FC } from 'react'
+import { type FC } from 'react'
 
 import { PAGES } from '@/config/public-pages.config'
 
@@ -17,7 +18,21 @@ interface Props {
 
 export const VideoItem: FC<Props> = ({ video, Icon }) => {
 	return (
-		<div className='text-xs'>
+		<m.div
+			className='text-xs'
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			whileHover={{
+				scale: 1.05,
+				y: -5,
+				boxShadow: '0 10px 20px rgba(0, 0, 0, 0.15)'
+			}}
+			transition={{
+				type: 'spring',
+				stiffness: 300,
+				damping: 20
+			}}
+		>
 			<div className='relative mb-1'>
 				<Link
 					href={PAGES.VIDEO(video.slug)}
@@ -82,6 +97,6 @@ export const VideoItem: FC<Props> = ({ video, Icon }) => {
 					)}
 				</Link>
 			</div>
-		</div>
+		</m.div>
 	)
 }
