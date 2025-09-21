@@ -1,12 +1,9 @@
 'use client'
 
-import { Menu, SquarePlay } from 'lucide-react'
-import Link from 'next/link'
+import { Menu } from 'lucide-react'
 import type { FC } from 'react'
 
-import { COLORS } from '@/constants/colors.constants'
-
-import { PAGES } from '@/config/public-pages.config'
+import { Logo } from './Logo'
 
 interface Props {
 	toggleSidebar: () => void
@@ -21,16 +18,8 @@ export const SidebarHeader: FC<Props> = ({ toggleSidebar }) => {
 			>
 				<Menu />
 			</button>
-			<Link
-				href={PAGES.HOME}
-				className='flex items-center gap-1.5'
-			>
-				<SquarePlay
-					size={30}
-					color={COLORS.primary}
-				/>
-				<span className='font-medium text-xl'>My video</span>
-			</Link>
+
+			<Logo />
 		</div>
 	)
 }
