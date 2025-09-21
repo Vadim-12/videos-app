@@ -1,18 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { useForm } from 'react-hook-form'
 
 import { Logo } from '@/components/layouts/sidebar/header/Logo'
 
 import { Button } from '@/ui/button/Button'
 import { Field } from '@/ui/field/Field'
 
-interface IAuthForm {
-	email: string
-	password: string
-	confirmPassword?: string
-}
+import { useAuthForm } from './useAuthForm'
+import type { IAuthForm } from '@/types/auth-form.types'
+
+import styles from './captcha.module.scss'
 
 export function Auth() {
 	const [isSignIn, setIsSignIn] = useState(true)
@@ -20,18 +20,13 @@ export function Auth() {
 		register,
 		handleSubmit,
 		formState: { errors },
-		watch
+		watch,
+		reset
 	} = useForm<IAuthForm>({
 		mode: 'onChange'
 	})
 
-	const onSubmit: SubmitHandler<IAuthForm> = data => {
-		if (isSignIn) {
-			console.log('sign-in data', data)
-		} else {
-			console.log('sign-up data', data)
-		}
-	}
+	const { isLoading, onSubmit, recaptchaRef } = useAuthForm(isSignIn ? 'login' : 'register', reset)
 
 	return (
 		<div className='w-full max-w-md mx-8 p-layout border-border border rounded-lg'>
@@ -54,6 +49,7 @@ export function Auth() {
 					Sign up
 				</button>
 			</div>
+
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<Field
 					label='Email'
@@ -81,8 +77,22 @@ export function Auth() {
 						error={errors.confirmPassword?.message}
 					/>
 				)}
+
+				<ReCAPTCHA
+					ref={recaptchaRef}
+					size='normal'
+					sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY as string}
+					theme='light'
+					className={styles.recaptcha}
+				/>
+
 				<div className='text-center mt-6'>
-					<Button type='submit'>{isSignIn ? 'Sign in' : 'Sign up'}</Button>
+					<Button
+						type='submit'
+						isLoading={isLoading}
+					>
+						{isSignIn ? 'Sign in' : 'Sign up'}
+					</Button>
 				</div>
 			</form>
 		</div>
