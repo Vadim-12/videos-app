@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import { Noto_Sans } from 'next/font/google'
 
-import { Layout } from '@/components/layouts/layout'
-
 import { Providers } from '@/providers/providers'
 
 import './globals.scss'
